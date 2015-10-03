@@ -5,7 +5,7 @@
  * @copyright   2015 Dony Wahyu Isp
  * @link        http://github.com/dnaextrim/rajaongkir_php
  * @license     MIT
- * @version     0.1.1
+ * @version     0.1.2
  * @package     RajaOngkir
  */
 class RajaOngkir {
@@ -14,7 +14,10 @@ class RajaOngkir {
     private $curl;
     private $curl_opt = array();
 
-    private $callback;
+    private $response = null;
+    private $error = null;
+
+
 
     /**
      * Constructor for Class Raja Ongkir
@@ -47,6 +50,8 @@ class RajaOngkir {
      * @return object                 $res->error, $res->response
      */
     private function exec($type, $command, $id, $request_method="GET") {
+        $this->response = null;
+        $this->error = null;
 
         $this->curl_opt[CURLOPT_CUSTOMREQUEST] = "GET";
         unset($this->curl_opt[CURLOPT_POSTFIELDS]);
@@ -84,7 +89,7 @@ class RajaOngkir {
             $this->url = $this->url = "http://pro.rajaongkir.com/api/";
         }
         $this->curl_opt[CURLOPT_URL] = $this->url.$type.'/'.$command.$id;
-        // print_r($this->curl_opt);
+        
         curl_setopt_array($this->curl, $this->curl_opt);
         if ($type == 'pro')
             $this->url = $url;
@@ -103,11 +108,109 @@ class RajaOngkir {
     }
 
     /**
+     * Success Callback Set
+     * @param  Closure $callback 
+     * @return $this   for caining          
+     */
+    public function success(Closure $callback) {
+        if (!$this->error) {
+            $callback = \Closure::bind($callback, $this, get_class());
+            $callback($this->response);
+        }
+        return $this;
+    }
+
+    /**
+     * Error Callback Set
+     * @param  Closure $callback
+     * @return $this   for caining
+     */
+    public function error(Closure $callback) {
+        if ($this->error)
+            $callback($this->error);
+        return $this;
+    }
+
+    /**
+     * For Non Callback
+     * @return array(object)/false
+     */
+    public function get() {
+        if (!$this->error)
+            return $this->response;
+        else
+            return false;
+    }
+
+    /**
+     * Read data per row
+     * @param  string/Closure $field
+     * @param  Closure        $callback
+     *
+     * $RO = new RajaOngkir($api_key);
+     * $RO->province($id)->each(function($row) {
+     *     print_r($row);
+     * });
+     *
+     * OR using selecting data results
+     * $RO->province($id)->each('results', function($row) {
+     *         print_r($row);
+     *     })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     */
+    public function each($field, $callback=null) {
+        if (!$this->error) {
+            $rows = $this->response;
+            if (is_callable($field))
+                $callback = $field;
+            else
+                $rows = $rows->$field;
+
+            while(list($idx, $row) = each($rows)) {
+                $callback($row);
+            }
+        }
+
+        return $this;
+    }
+    /**
      * Province API
      * @param  int              $id       id of province
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $RO->province($id)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->province($id, function($data) {
+     *     print_r(data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->province($id)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->province($id)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
     public function province($id, $callback=null, $error=null) {
 
@@ -123,15 +226,17 @@ class RajaOngkir {
 
         $res = $this->exec('starter', 'province', $id, "GET");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
 
@@ -142,6 +247,36 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $RO->city($province, $id)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->city($province, $id, function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     * 
+     * OR
+     * $res = $RO->city($province, $id)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->city($province, $id)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
     public function city($province, $id, $callback=null, $error=null) {
 
@@ -157,15 +292,17 @@ class RajaOngkir {
 
         $res = $this->exec('starter', 'city', $id, "GET");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
 
     }
 
@@ -175,19 +312,57 @@ class RajaOngkir {
      * @param  Closure/function $callback   callback after execution API
      * @param  Closure/function $error      error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $params = array(
+     *     'origin'         => 501,
+     *     'destination'    => 114,
+     *     'weight'         => 1700,
+     *     'courier'        => 'jne'
+     * );
+     * $RO->cost($params)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->cost($params, function($data) {
+     *     print_r(data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->cost($id)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->cost($id)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
     public function cost($params, $callback=null, $error=null) {
         $res = $this->exec('starter', 'cost', $params, "POST");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
     /**
@@ -197,8 +372,38 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $RO->internationalOrigin($provice, $id)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->internationalOrigin($province, $id, function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->internationalOrigin($province, $id)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->internationalOrigin($province, $id)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
-    public function internasional_origin($province, $id, $callback=null, $error=null) {
+    public function internationalOrigin($province, $id, $callback=null, $error=null) {
 
         if (is_callable($id)) {
             $callback = $id;
@@ -212,16 +417,17 @@ class RajaOngkir {
 
         $res = $this->exec('basic', 'internationalOrigin', $id, "GET");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
 
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
     /**
@@ -230,8 +436,38 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $RO->internationalDestination($id)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->internationalDestination($id, function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->internationalDestination($id)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->internationalDestination($id)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
-    public function internasional_destination($id, $callback=null, $error=null) {
+    public function internationalDestination($id, $callback=null, $error=null) {
 
         if (is_callable($id)) {
             $callback = $id;
@@ -245,15 +481,17 @@ class RajaOngkir {
 
         $res = $this->exec('basic', 'internationalDestination', $id, "GET");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
     /**
@@ -262,19 +500,54 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $params = array(
+     * 
+     * );
+     * $RO->internationalCost($params)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->internationalCost($params, function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->internationalCost($params)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->internationalCost($params)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
-    public function internasional_cost($params, $callback=null, $error=null) {
+    public function internationalCost($params, $callback=null, $error=null) {
         $res = $this->exec('basic', 'internationalCost', $params, "POST");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
     /**
@@ -282,19 +555,51 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $RO->currency()
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->currency(function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->currency()->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->currency()
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
-    public function currency(Closure $callback, $error=null) {
+    public function currency($callback=null, $error=null) {
         $res = $this->exec('basic', 'currency', '', "GET");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
     /**
@@ -303,19 +608,54 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $params = array(
+     * 
+     * );
+     * $RO->waybill($params)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->waybill($params, function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->waybill($params)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->waybill($params)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
     public function waybill($params, $callback=null, $error=null) {
         $res = $this->exec('basic', 'waybill', $params, "POST");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
     /**
@@ -324,6 +664,36 @@ class RajaOngkir {
      * @param  Closure/function $callback callback after execution API
      * @param  Closure/function $error    error message after execution API
      * @return Object           Data Response from RajaOngkir
+     *
+     * @example
+     * $RO = new RajaOngkir($api_key);
+     * $RO->subdistrict($id)
+     *    ->success(function($data) {
+     *        print_r($data);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
+     *
+     * OR
+     * $RO->subdistrict($id, function($data) {
+     *     print_r($data);
+     * }, function($msg) {
+     *     echo $msg;
+     * });
+     *
+     * OR
+     * $res = $RO->subdistrict($id)->get();
+     * print_r($res);
+     *
+     * OR
+     * $RO->subdistrict($id)
+     *    ->each(function('results', $row) {
+     *        print_r($row);
+     *    })
+     *    ->error(function($msg) {
+     *        echo $msg;
+     *    });
      */
     public function subdistrict($id, $callback=null, $error=null) {
         
@@ -339,15 +709,17 @@ class RajaOngkir {
 
         $res = $this->exec('pro', 'subdistrict', $id, "GET");
 
-        if ($res->error) {
-            if (is_callable($error))
-                return $error($res->error);
-            else
-                echo "cURL Error #:" . $res->error;
-        } else {
+        if (is_callable($error))
+            $error($res->error);
+
+        if (is_callable($callback)) {
             $callback = \Closure::bind($callback, $this, get_class());
-            return $callback($res->response);
+            $callback($res->response);
         }
+
+        $this->response = $res->response;
+        $this->error = $res->error;
+        return $this;
     }
 
 }
