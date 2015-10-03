@@ -1,6 +1,20 @@
 **RAJAONGKIR PHP Library**
 =====================
 
+
+> **PayPal**: [![](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dony_cavalera_md%40yahoo%2ecom&lc=US&item_name=Dony%20Wahyu%20Isp&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest)
+> 
+> **Rekening Mandiri**: 113-000-6944-858, **Atas Nama**: Dony Wahyu Isprananda
+
+#**RajaOngkir**#
+RajaOngkir merupakan sebuah situs dan web service (API) yang menyediakan informasi ongkos kirim dari berbagai kurir di Indonesia seperti POS Indonesia, JNE, TIKI, PCP, ESL, dan RPX. Secara umum, RajaOngkir ditujukan kepada pengguna yang ingin mengetahui dan membandingkan ongkos kirim dari berbagai kurir dan secara khusus bagi pemilik toko online, maupun bagi orang yang sering berbelanja online.
+[http://www.rajaongkir.com](http://rajaongkir.com)
+
+#**RajaOngkir PHP Library**#
+Library/pustaka ini digunakan untuk mempermudah kita dalam menggunakan fasilitas API yang disediakan oleh RajaOngkir.
+
+Donasi sangat diperlukan karena pengembang hanya bisa menggunakan tipe akun starter yang gratisan dan tidak memiliki tipe akun basic ataupun pro, jadi donasi akan digunakan untuk membeli akun basic/pro sehingga pengembang dapat melakukan testing code API pada tipe akun basic/pro.
+
 #**Cara Penggunaan**#
 
 ##**Province**##
@@ -10,6 +24,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -26,6 +41,7 @@ $RO->province($id)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -40,6 +56,7 @@ $RO->province($id, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -60,6 +77,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -83,6 +101,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -100,6 +119,7 @@ $RO->city($id_province, $id)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -115,6 +135,7 @@ $RO->city($id_province, $id, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -136,6 +157,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -160,6 +182,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -181,6 +204,7 @@ $RO->cost($params)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -200,6 +224,7 @@ $RO->cost($params, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -225,6 +250,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -251,6 +277,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -268,6 +295,7 @@ $RO->internationalOrigin($id_province, $id)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -283,6 +311,7 @@ $RO->internationalOrigin($id_province, $id, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -304,6 +333,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -328,6 +358,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -344,6 +375,7 @@ $RO->internationalDestination($id)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -358,6 +390,7 @@ $RO->internationalDestination($id, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -378,6 +411,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -399,6 +433,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -420,6 +455,7 @@ $RO->internationalCost($params)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -439,6 +475,7 @@ $RO->internationalCost($params, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -464,6 +501,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -490,6 +528,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -505,6 +544,7 @@ $RO->currency()
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -518,6 +558,7 @@ $RO->currency(function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -537,6 +578,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -557,6 +599,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -576,6 +619,7 @@ $RO->waybill($params)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -593,6 +637,7 @@ $RO->waybill($params, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -616,6 +661,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -640,6 +686,7 @@ Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu le
 **Cara Pertama**
 Cara ini sangat direkomendasi, selain mempermudah dalam pembacaan code, juga baik dalam penanganan error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -656,6 +703,7 @@ $RO->subdistrict($city)
 **Cara Kedua**
 Cara ini hampir sama dengan cara pertama cuma dibuat lebih simple, cuma pembacaan code terkadang menjadi membingungkan, parameter callback yang pertama untuk success, dan callback parameter kedua untuk error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -670,6 +718,7 @@ $RO->subdistrict($city, function($data) {
 **Cara Ketiga**
 Cara ini merupakan model lama, dan masih yang paling banyak digunakan, karena dari pembacaan code lebih mudah dibaca, cuma untuk penangan error harus ditangani secara manual, jadi jika hasilnya tidak sama dengan **`false`** berarti tidak error, sedangkan jika hasilnya sama dengan **`false`** berarti error.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -690,6 +739,7 @@ each($field, $callback);
 ```
 $field bisa dihilangkan untuk membaca seluruh data, atau bisa menggunakan paramater field untuk membaca data tertentu saja.
 ```php
+<?php
 include("RajaOngkir.php");
 
 $api_key = "756359f53dbc303e438218878060902a";
@@ -703,4 +753,3 @@ $RO->subdistrict($city)
        echo $msg;
    });
 ```
-
