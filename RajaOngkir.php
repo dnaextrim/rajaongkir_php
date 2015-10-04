@@ -101,8 +101,7 @@ class RajaOngkir {
         curl_close($this->curl);
         
         if (!$res['error']) {
-            $res['response'] = json_decode($res['response']);
-            $res['response'] = $res['response']->rajaongkir;
+            $res['response'] = new RajaOngkirResponse($res['response']);
         }
         return (object) $res;
     }
@@ -722,4 +721,61 @@ class RajaOngkir {
         return $this;
     }
 
+}
+
+class RajaOngkirResponse implements ArrayAccess {
+    private $data;
+    private $raw_data;
+
+    public function __construct($data) {
+        $this->raw_data = $data;
+        $this->data = json_decode($data);
+        if (isset($this->data->rajaongkir))
+            $this->data = $this->data->rajaongkir;
+    }
+
+    public function raw() {
+        return $this->raw_data;
+    }
+
+    public function __toString() {
+        return json_encode($this->data);
+    }
+
+    public function __set($offset, $value) {
+        if (!empty($offset))
+            $this->data->$offset = $value;
+    }
+
+    public function __get($offset) {
+        if (!($this->data->$offset instanceof RajaOngkirResponse ))
+            $this->data->$offset = new RajaOngkirResponse(json_encode($this->data->$offset));
+        return (isset($this->data->$offset))? $this->data->$offset : null;
+    }
+
+    public function offsetSet($offset, $value) {
+        if (!empty($offset))
+            $this->data->$offset = $value;
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->data->$offset);
+    }
+
+    public function offsetUnset($offset) {
+        unset($this->data->$offset);
+    }
+
+    public function offsetGet($offset) {
+        if (is_numeric($offset)) {
+            if (!($this->data[$offset] instanceof RajaOngkirResponse ))
+                $this->data[$offset] = new RajaOngkirResponse(json_encode($this->data[$offset]));
+            return isset($this->data[$offset])? $this->data[$offset] : null;
+        } else {
+            if (!($this->data->$offset instanceof RajaOngkirResponse ))
+                $this->data->$offset = new RajaOngkirResponse(json_encode($this->data->$offset));
+            return isset($this->data->$offset)? $this->data->$offset : null;
+        }
+
+    }
 }
