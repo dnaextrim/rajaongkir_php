@@ -17,6 +17,81 @@ Donasi sangat diperlukan karena pengembang hanya bisa menggunakan tipe akun star
 
 #**Cara Penggunaan**#
 
+Untuk mengakses data hasil ada 2 cara
+**1. Sebagai Array**
+```php
+<?php
+$api_key = "756359f53dbc303e438218878060902a";
+$RO = new RajaOngkir($api_key);
+$id = 33;
+$RO->province($id)
+   ->success(function($data) {
+        print_r($data['results'][0]); // Akses Data sebagai Array
+   })
+   ->error(function($msg) {
+        echo $msg;
+   });
+```
+**2. Sebagai Object** 
+```php
+<?php
+$api_key = "756359f53dbc303e438218878060902a";
+$RO = new RajaOngkir($api_key);
+$id = 33;
+$RO->province($id)
+   ->success(function($data) {
+        print_r($data->results[0]); // Akses Data sebagai Array
+   })
+   ->error(function($msg) {
+        echo $msg;
+   });
+```
+
+Terdapat 2 hasil output
+**1. Sebagai Array**, gunakan fungsi `print_r()` dari php maka hasil outputnya otomatis dalam bentuk `Array`
+```php
+<?php
+$api_key = "756359f53dbc303e438218878060902a";
+$RO = new RajaOngkir($api_key);
+$id = 33;
+$RO->province($id)
+   ->success(function($data) {
+        print_r($data->results); // Output berupa Array
+   })
+   ->error(function($msg) {
+        echo $msg;
+   });
+```
+**2. Sebagai JSON**, gunakan perintah `echo` dari php maka hasil outputnya otomatis dalam bentuk format JSON
+```php
+<?php
+$api_key = "756359f53dbc303e438218878060902a";
+$RO = new RajaOngkir($api_key);
+$id = 33;
+$RO->province($id)
+   ->success(function($data) {
+        echo $data->results; // Output berupa format JSON
+   })
+   ->error(function($msg) {
+        echo $msg;
+   });
+```
+**Raw Data**
+> Untuk mendapatkan raw data, atau data asli dari rajaongkir gunakan fungsi raw
+```php
+<?php
+$api_key = "756359f53dbc303e438218878060902a";
+$RO = new RajaOngkir($api_key);
+$id = 33;
+$RO->province($id)
+   ->success(function($data) {
+        echo $data->raw(); // data asli yang dikirim dari RajaOngkir.com
+   })
+   ->error(function($msg) {
+        echo $msg;
+   });
+```
+
 ##**Province**##
 Method "province" digunakan untuk mendapatkan daftar propinsi yang ada di Indonesia.
 Ada 4 cara penulisan Code, kamu bisa menggunakan salah satu yang menurut kamu lebih mudah.
@@ -64,9 +139,9 @@ $id = 33;
 $RO = new RajaOngkir($api_key);
 $res = $RO->province($id)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -144,9 +219,9 @@ $id = 39;
 $RO = new RajaOngkir($api_key);
 $res = $RO->city($id_province, $id)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -188,10 +263,10 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 501,
-    'destination'    => 114,
-    'weight'         => 1700,
-    'courier'        => 'jne'
+  'origin'         => 501,
+  'destination'    => 114,
+  'weight'         => 1700,
+  'courier'        => 'jne'
 );
 $RO->cost($params)
    ->success(function($data) {
@@ -210,10 +285,10 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 501,
-    'destination'    => 114,
-    'weight'         => 1700,
-    'courier'        => 'jne'
+  'origin'         => 501,
+  'destination'    => 114,
+  'weight'         => 1700,
+  'courier'        => 'jne'
 );
 $RO->cost($params, function($data) {
     print_r(data);
@@ -230,16 +305,16 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 501,
-    'destination'    => 114,
-    'weight'         => 1700,
-    'courier'        => 'jne'
+  'origin'         => 501,
+  'destination'    => 114,
+  'weight'         => 1700,
+  'courier'        => 'jne'
 );
 $res = $RO->cost($params)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -256,10 +331,10 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 501,
-    'destination'    => 114,
-    'weight'         => 1700,
-    'courier'        => 'jne'
+  'origin'         => 501,
+  'destination'    => 114,
+  'weight'         => 1700,
+  'courier'        => 'jne'
 );
 $RO->cost($params)
    ->each(function('results', $row) {
@@ -320,9 +395,9 @@ $id = 152;
 $RO = new RajaOngkir($api_key);
 $res = $RO->internationalOrigin($id_province, $id)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -398,9 +473,9 @@ $id = 108;
 $RO = new RajaOngkir($api_key);
 $res = $RO->internationalDestination($id)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -439,10 +514,10 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 152,
-    'destination'    => 108,
-    'weight'         => 1400,
-    'courier'        => 'pos'
+  'origin'         => 152,
+  'destination'    => 108,
+  'weight'         => 1400,
+  'courier'        => 'pos'
 );
 $RO->internationalCost($params)
    ->success(function($data) {
@@ -461,10 +536,10 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 152,
-    'destination'    => 108,
-    'weight'         => 1400,
-    'courier'        => 'pos'
+  'origin'         => 152,
+  'destination'    => 108,
+  'weight'         => 1400,
+  'courier'        => 'pos'
 );
 $RO->internationalCost($params, function($data) {
     print_r(data);
@@ -481,16 +556,16 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 152,
-    'destination'    => 108,
-    'weight'         => 1400,
-    'courier'        => 'pos'
+  'origin'         => 152,
+  'destination'    => 108,
+  'weight'         => 1400,
+  'courier'        => 'pos'
 );
 $res = $RO->internationalCost($params)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -507,10 +582,10 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'origin'         => 152,
-    'destination'    => 108,
-    'weight'         => 1400,
-    'courier'        => 'pos'
+  'origin'         => 152,
+  'destination'    => 108,
+  'weight'         => 1400,
+  'courier'        => 'pos'
 );
 $RO->internationalCost($params)
    ->each(function('results', $row) {
@@ -565,9 +640,9 @@ $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $res = $RO->currency()->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -605,8 +680,8 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'waybill'        => 'SOCAG00183235715',
-    'courier'        => 'jne'
+  'waybill'        => 'SOCAG00183235715',
+  'courier'        => 'jne'
 );
 $RO->waybill($params)
    ->success(function($data) {
@@ -625,8 +700,8 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'waybill'        => 'SOCAG00183235715',
-    'courier'        => 'jne'
+  'waybill'        => 'SOCAG00183235715',
+  'courier'        => 'jne'
 );
 $RO->waybill($params, function($data) {
     print_r(data);
@@ -643,14 +718,14 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'waybill'        => 'SOCAG00183235715',
-    'courier'        => 'jne'
+  'waybill'        => 'SOCAG00183235715',
+  'courier'        => 'jne'
 );
 $res = $RO->waybill($params)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
@@ -667,8 +742,8 @@ include("RajaOngkir.php");
 $api_key = "756359f53dbc303e438218878060902a";
 $RO = new RajaOngkir($api_key);
 $params = array(
-    'waybill'        => 'SOCAG00183235715',
-    'courier'        => 'jne'
+  'waybill'        => 'SOCAG00183235715',
+  'courier'        => 'jne'
 );
 $RO->waybill($params)
    ->each(function('results', $row) {
@@ -726,9 +801,9 @@ $RO = new RajaOngkir($api_key);
 $city = 39;
 $res = $RO->subdistrict($city)->get();
 if ($res)
-    print_r($res);
+  print_r($res);
 else
-    echo 'Error: '.$res
+  echo 'Error: '.$res
 ```
 
 **Cara Keempat**
