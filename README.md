@@ -17,7 +17,8 @@ Donasi sangat diperlukan karena pengembang hanya bisa menggunakan tipe akun star
 
 #**Cara Penggunaan**#
 
-Untuk mengakses data hasil ada 2 cara
+Untuk mengakses data hasil ada 2 cara:
+
 **1. Sebagai Array**
 ```php
 <?php
@@ -47,7 +48,8 @@ $RO->province($id)
    });
 ```
 
-Terdapat 2 hasil output
+Terdapat 2 hasil output:
+
 **1. Sebagai Array**, gunakan fungsi `print_r()` dari php maka hasil outputnya otomatis dalam bentuk `Array`
 ```php
 <?php
