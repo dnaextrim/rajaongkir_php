@@ -163,13 +163,14 @@ class RajaOngkir {
     public function each($field, $callback=null) {
         if (!$this->error) {
             $rows = $this->response;
+            
             if (is_callable($field))
                 $callback = $field;
             else
                 $rows = $rows->$field;
-
-            while(list($idx, $row) = each($rows)) {
-                $callback($row);
+            print_r($rows);
+            foreach ($rows as $key => $value) {
+                $callback($value);
             }
         }
 
@@ -212,7 +213,8 @@ class RajaOngkir {
      *        echo $msg;
      *    });
      */
-    public function province($id, $callback=null, $error=null) {
+    public function province($id="", $callback=null, $error=null) {
+        if (empty($id)) $id="";
 
         if (is_callable($id)) {
             $callback = $id;
@@ -278,7 +280,8 @@ class RajaOngkir {
      *        echo $msg;
      *    });
      */
-    public function city($province, $id, $callback=null, $error=null) {
+    public function city($province, $id="", $callback=null, $error=null) {
+        if (empty($id)) $id="";
 
         if (is_callable($id)) {
             $callback = $id;
@@ -724,11 +727,14 @@ class RajaOngkir {
 
 }
 
-class RajaOngkirResponse implements ArrayAccess {
+class RajaOngkirResponse implements Iterator, ArrayAccess, Countable {
     private $data;
     private $raw_data;
 
+    private $position = 0;
+
     public function __construct($data) {
+        $this->position = 0;
         $this->raw_data = $data;
         $this->data = json_decode($data);
         if (isset($this->data->rajaongkir))
@@ -752,9 +758,9 @@ class RajaOngkirResponse implements ArrayAccess {
     }
 
     public function __get($offset) {
-        if (!is_object($this->data->$offset) && !is_array($this->data->$offset))
-            return $this->data->$offset;
-
+        /*if (!is_object($this->data->$offset) || !is_array($this->data->$offset))
+            return $this->data->$offset;*/
+        
         if (!($this->data->$offset instanceof RajaOngkirResponse ))
             $this->data->$offset = new RajaOngkirResponse(json_encode($this->data->$offset));
         return (isset($this->data->$offset))? $this->data->$offset : null;
@@ -784,5 +790,29 @@ class RajaOngkirResponse implements ArrayAccess {
             return isset($this->data->$offset)? $this->data->$offset : null;
         }
 
+    }
+
+    public function current() {
+        return $this->data[$this->position];
+    }
+
+    public function next() {
+        ++$this->position;
+    }
+
+    public function key() {
+        return $this->position;
+    }
+
+    public function valid() {
+        return isset($this->data[$this->position]);
+    }
+
+    public function rewind() {
+        $this->position = 0;
+    }
+
+    public function count() {
+        return count($this->data);
     }
 }
