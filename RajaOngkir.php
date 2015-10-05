@@ -739,6 +739,9 @@ class RajaOngkirResponse implements ArrayAccess {
     }
 
     public function __toString() {
+        if (!is_object($this->data) && !is_array($this->data))
+            return $this->data;
+
         return json_encode($this->data);
     }
 
@@ -748,6 +751,9 @@ class RajaOngkirResponse implements ArrayAccess {
     }
 
     public function __get($offset) {
+        if (!is_object($this->data->$offset) && !is_array($this->data->$offset))
+            return $this->data->$offset;
+        
         if (!($this->data->$offset instanceof RajaOngkirResponse ))
             $this->data->$offset = new RajaOngkirResponse(json_encode($this->data->$offset));
         return (isset($this->data->$offset))? $this->data->$offset : null;
