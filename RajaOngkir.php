@@ -168,7 +168,7 @@ class RajaOngkir {
                 $callback = $field;
             else
                 $rows = $rows->$field;
-            print_r($rows);
+            // print_r($rows);
             foreach ($rows as $key => $value) {
                 $callback($value);
             }
