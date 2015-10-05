@@ -5,7 +5,7 @@
  * @copyright   2015 Dony Wahyu Isp
  * @link        http://github.com/dnaextrim/rajaongkir_php
  * @license     MIT
- * @version     0.1.2
+ * @version     0.1.5
  * @package     RajaOngkir
  */
 class RajaOngkir {
@@ -753,7 +753,7 @@ class RajaOngkirResponse implements ArrayAccess {
     public function __get($offset) {
         if (!is_object($this->data->$offset) && !is_array($this->data->$offset))
             return $this->data->$offset;
-        
+
         if (!($this->data->$offset instanceof RajaOngkirResponse ))
             $this->data->$offset = new RajaOngkirResponse(json_encode($this->data->$offset));
         return (isset($this->data->$offset))? $this->data->$offset : null;
