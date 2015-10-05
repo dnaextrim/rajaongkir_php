@@ -99,7 +99,8 @@ class RajaOngkir {
         $res['error'] = curl_error($this->curl);
 
         curl_close($this->curl);
-        
+        $this->curl = curl_init();
+
         if (!$res['error']) {
             $res['response'] = new RajaOngkirResponse($res['response']);
         }
