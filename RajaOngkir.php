@@ -118,7 +118,7 @@ class RajaOngkir {
      */
     public function success(Closure $callback) {
         if (!$this->error) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $this->response = $callback($this->response);
         }
         return $this;
@@ -174,6 +174,7 @@ class RajaOngkir {
                 $rows = $rows->$field;
             // print_r($rows);
             foreach ($rows as $key => $value) {
+                $callback = \Closure::bind($callback, $this, 'RajaOngkir');
                 $this->response = $callback($value);
             }
         }
@@ -236,7 +237,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -303,7 +304,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -363,7 +364,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -428,7 +429,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -492,7 +493,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -548,7 +549,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -600,7 +601,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -656,7 +657,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
@@ -720,7 +721,7 @@ class RajaOngkir {
             $error($res->error);
 
         if (is_callable($callback)) {
-            $callback = \Closure::bind($callback, $this, get_class());
+            $callback = \Closure::bind($callback, $this, 'RajaOngkir');
             $callback($res->response);
         }
 
