@@ -5,7 +5,7 @@
  * @copyright   2015 Dony Wahyu Isp
  * @link        http://github.com/dnaextrim/rajaongkir_php
  * @license     MIT
- * @version     0.1.5
+ * @version     0.1.6
  * @package     RajaOngkir
  */
 class RajaOngkir {
