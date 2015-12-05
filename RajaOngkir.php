@@ -103,11 +103,13 @@ class RajaOngkir {
 
         if (!$res['error']) {
             $res['response'] = new RajaOngkirResponse($res['response']);
+
+            if ($res['response']->status->code != 200) {
+                $res['error'] = $res['response']->status->description;
+            }
         }
 
-        if ($res['response']->status->code != 200) {
-            $res['error'] = $res['response']->status->description;
-        }
+        
         return (object) $res;
     }
 
@@ -130,6 +132,7 @@ class RajaOngkir {
      * @return $this   for caining
      */
     public function error(Closure $callback) {
+        header("HTTP/1.0 500 Internal Server Error");
         if ($this->error)
             $callback($this->error);
         return $this;
@@ -172,7 +175,7 @@ class RajaOngkir {
                 $callback = $field;
             else
                 $rows = $rows->$field;
-            // print_r($rows);
+            
             foreach ($rows as $key => $value) {
                 $callback = \Closure::bind($callback, $this, 'RajaOngkir');
                 $this->response = $callback($value);
