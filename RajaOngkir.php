@@ -58,15 +58,23 @@ class RajaOngkir {
         $this->curl_opt[CURLOPT_HTTPHEADER] = array(
             "key: ".$this->api_key
         );
+        
+        if (is_array($id)) {
+            $params = $id;
+            $id = '';
+        }
 
-        switch ($command) {
+        /*switch ($command) {
             case 'cost':
                 $params = $id;
                 $id = "";
             break;
-        }
 
-        
+            case 'waybill':
+                $params = $id;
+                $id = "";
+            break;
+        }*/
 
         if (isset($params)) {
             $this->curl_opt[CURLOPT_CUSTOMREQUEST] = "POST";
@@ -97,7 +105,7 @@ class RajaOngkir {
         $res = array();
         $res['response'] = curl_exec($this->curl);
         $res['error'] = curl_error($this->curl);
-
+        
         curl_close($this->curl);
         $this->curl = curl_init();
 
@@ -654,7 +662,7 @@ class RajaOngkir {
      *    });
      */
     public function waybill($params, $callback=null, $error=null) {
-        $res = $this->exec('basic', 'waybill', $params, "POST");
+        $res = $this->exec('pro', 'waybill', $params, "POST");
 
         if (is_callable($error))
             $error($res->error);
