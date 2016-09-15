@@ -10,6 +10,9 @@
 RajaOngkir merupakan sebuah situs dan web service (API) yang menyediakan informasi ongkos kirim dari berbagai kurir di Indonesia seperti POS Indonesia, JNE, TIKI, PCP, ESL, dan RPX. Secara umum, RajaOngkir ditujukan kepada pengguna yang ingin mengetahui dan membandingkan ongkos kirim dari berbagai kurir dan secara khusus bagi pemilik toko online, maupun bagi orang yang sering berbelanja online.
 [http://www.rajaongkir.com](http://rajaongkir.com)
 
+#**DEMO**#
+[https://rajaongkir-kecik.herokuapp.com](https://rajaongkir-kecik.herokuapp.com/)
+
 #**RajaOngkir PHP Library**#
 Library/pustaka ini digunakan untuk mempermudah kita dalam menggunakan fasilitas API yang disediakan oleh RajaOngkir.
 
